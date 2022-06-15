@@ -1,19 +1,18 @@
-#ifndef _MONTY_H_
-#define _MONTY_H_
+#ifndef MONTY_H
+#define MONTY_H
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdnoreturn.h>
 #include <stddef.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
 
-#define OPCODES \
-	{					        \
+#define OPCODES\
+	{					\
 		{"push", push},			\
 		{"pall", pall},			\
 		{"pint", pint},			\
@@ -35,9 +34,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -50,9 +49,10 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+
 
 /**
  * struct arg - argument for the current opcode
@@ -67,20 +67,22 @@ typedef struct arg
 arg Arg;
 
 
-void push(stack_t **stack, unsigned int line_number);
-void swap(stack_t **stack, unsigned int line_number);
-void add(stack_t **stack, unsigned int line_number);
-void pop(stack_t **stack, unsigned int line_number);
-void nop(stack_t **stack, unsigned int line_number);
+void file_error(char *file);
+void usage_error(void);
+void push_error(unsigned int line_number);
 void pint_error(unsigned int line_number);
 void pop_error(unsigned int line_number);
-void file_error(char *file);
-void usage_error(void);void pint(stack_t **stack, unsigned int line_number);
-void free_stack(stack_t **stack);
-ssize_t getline(char **__restrict__ __lineptr, size_t *__restrict__ __n, FILE *__restrict__ __stream);
-void push_error(unsigned int line_number);
-void pall(stack_t **stack, unsigned int line_number __attribute__((unused)));
+
 void free_stack(stack_t **stack);
 void run_opcode(char *opcode, stack_t **stack, unsigned int line_number);
+
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
+ssize_t getline(char **__restrict__ __lineptr, size_t *__restrict__ __n, FILE *__restrict__ __stream);
 
 #endif
